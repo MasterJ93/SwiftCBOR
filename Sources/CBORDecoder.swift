@@ -14,6 +14,10 @@ extension CBOR {
     static public func decode(_ input: [UInt8], options: CBOROptions = CBOROptions()) throws -> CBOR? {
         return try CBORDecoder(input: input, options: options).decodeItem()
     }
+
+    static public func decodeMultipleItems(_ input: [UInt8], options: CBOROptions = CBOROptions()) throws -> [CBOR]? {
+        return try CBORDecoder(input: input, options: options).decodeMultipleItems()
+    }
 }
 
 public class CBORDecoder {
