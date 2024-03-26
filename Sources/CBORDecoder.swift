@@ -35,6 +35,18 @@ public class CBORDecoder {
         self.options = options
     }
 
+    public func decodeMultipleItems() throws -> [CBOR] {
+        var items: [CBOR] = []
+
+        while !istream.isAtEnd {
+            if let item = try decodeItem() {
+                items.append(item)
+            }
+        }
+
+        return items
+    }
+
     func readBinaryNumber<T>(_ type: T.Type) throws -> T {
         Array(try self.istream.popBytes(MemoryLayout<T>.size).reversed()).withUnsafeBytes { ptr in
             return ptr.load(as: T.self)

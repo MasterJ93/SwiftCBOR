@@ -1,4 +1,5 @@
 public protocol CBORInputStream {
+    var isAtEnd: Bool { get }
     mutating func popByte() throws -> UInt8
     mutating func popBytes(_ n: Int) throws -> ArraySlice<UInt8>
 }
@@ -13,6 +14,11 @@ struct ArrayUInt8 {
 }
 
 extension ArraySliceUInt8: CBORInputStream {
+    // Existing implementation
+    var isAtEnd: Bool {
+        return slice.isEmpty
+    }
+
     mutating func popByte() throws -> UInt8 {
         if slice.count < 1 { throw CBORError.unfinishedSequence }
         return slice.removeFirst()
@@ -37,5 +43,9 @@ extension ArrayUInt8: CBORInputStream {
         let res = array.prefix(n)
         array = array.dropFirst(n)
         return res
+    }
+
+    var isAtEnd: Bool {
+        return array.isEmpty
     }
 }
